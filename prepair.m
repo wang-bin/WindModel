@@ -6,7 +6,6 @@ GlobalConst
 
 global CL;
 
-Fig = figure;
 colormap('bone');
 hold on;
 imagesc(aa);

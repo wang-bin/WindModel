@@ -9,9 +9,19 @@ global  aa bb cc;
 s = size(P, 1);
 W = cell(s, 1);
 PRad = deg2rad(P);
+%{
+parcalc = false;
+if (s>40)
+    parcalc = true;
+end
+if (parcalc)
+    fprintf('Enabling parallel computing...Wait for open the worker pool');
+    matlabpool open;
+end
+%}
 for i = 1:s
     fprintf('\n(%d, %d)==> ', P(i,1), P(i,2));
-	RC = Match_corr([PRad(i,1), PRad(i,2)], bb, aa, cc);
+	RC = Match_corr(PRad(i,:), bb, aa, cc);
 	V = NaN;
     CP = NaN;
 	if (isnan(RC))
@@ -22,10 +32,15 @@ for i = 1:s
             %plot(RC(:,2), RC(:,1), 'b', 'LineWidth', 1);
         V = VelocityS(LL(1:2:3,:));
 	end
-	W{i} = {[P(i,1), P(i,2)], rad2deg(CP), RC, V};
+	W{i} = {P(i,:), rad2deg(CP), RC, V};
 end
 fprintf('\n');
-
+%{
+if (parcalc)
+    fprintf('Closing worker pool...');
+    matlabpool close;
+end
+%}
 toc
 
 if (nargin == 2)

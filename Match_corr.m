@@ -7,17 +7,16 @@ function RC = Match_corr(LL, M0, M1, M2) %M, C)
 global SearchN WindowN;
 %WindowN = 16;
 dRad = deg2rad(0.5);
-RCmin = LL2RC(LL - [dRad, -dRad]);
-RCmax = LL2RC(LL + [dRad, -dRad]);
+dLL = ones(size(LL,1),1) * [dRad, -dRad];
+RCmin = LL2RC(LL - dLL);
+RCmax = LL2RC(LL + dLL);
 RC0 = LL2RC(LL);
-r0 = RC0(1,1);
-c0 = RC0(1,2);
-rmin = RCmin(1,1);
-cmin = RCmin(1,2);
-rmax = RCmax(1,1);
-cmax = RCmax(1,2);
-
-
+r0 = RC0(:,1);
+c0 = RC0(:,2);
+rmin = RCmin(:,1);
+cmin = RCmin(:,2);
+rmax = RCmax(:,1);
+cmax = RCmax(:,2);
 
 r =rmax-rmin+1;
 c = cmax-cmin+1;
@@ -32,7 +31,7 @@ maxM = max(max(M));
 stdM = std2(M);
 
 fprintf('Check {mean:%f, max:%d, std2:%f} ', meanM, maxM, stdM);
-if ( meanM < 512 & maxM < 512 & stdM < 32 )
+if ( meanM < 512 && maxM < 512 && stdM < 32 )
     RC = NaN;
     return;
 end
@@ -92,20 +91,3 @@ r_2 = r0 -hsm + r_2 - 1 + hwm;
 c_2 = c0-hsm + c_2 - 1 + hwm;
 
 RC = [r_1, c_1; r_0, c_0; r_2, c_2];
-
-%toc
-%{
-%C = M(25:40, 25:40);
-n = 63 - 16 + 1;
-cc = zeros(n, n);
-for i = 1:n
-    for j = 1:n
-        D = M(i:i+15,j:j+15);
-        cc(i, j) = corr(C(:), D(:));
-    end
-end
-m = max(max(cc));
-[r, c] = find(cc == m);
-RC = [r, c] + [7, 7];
-%mesh(cc)
-%}
