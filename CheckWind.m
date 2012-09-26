@@ -23,8 +23,8 @@ for i=1:s
             A1 = AngleS(LL(1:2,:));
             A2 = AngleS(LL(2:3,:));
             dA = abs(A2 -A1);
-            if (dA < pi/2)
-                fprintf('==>Angle %.2f is too small', rad2deg(dA));
+            if (dA > pi/2)
+                fprintf('==>Angle changes too much: %.2f', rad2deg(dA));
             else
                 N = N+1;
                 Idx(N) = i;
