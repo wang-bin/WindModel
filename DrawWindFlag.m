@@ -33,17 +33,17 @@ A = AngleRC(RC);
 [R, C] = FindRC(RC(1,:), A, Len);
 plot([RC(1,2) C]', [RC(1,1) R]', 'color', color, 'LineWidth', width);
 %draw feather
-[r, c] = FindRC([R, C], A + pi/2, LenF);
+[r, c] = FindRC([R, C], A - pi/2, LenF);
 plot([C c]', [R r]', 'color', color, 'LineWidth', width);
 
 
 if (v > 20)
     [R, C] = FindRC(RC(1,:), A, Len*3/4);
-    [r, c] = FindRC([R, C], A + pi/2, LenF);
+    [r, c] = FindRC([R, C], A - pi/2, LenF);
     plot([C c]', [R r]', 'color', color, 'LineWidth', width);
     if (v>40)
         [R, C] = FindRC(RC(1,:), A, Len/2);
-        [r, c] = FindRC([R, C], A + pi/2, LenF);
+        [r, c] = FindRC([R, C], A - pi/2, LenF);
         plot([C c]', [R r]', 'color', color, 'LineWidth', width);
     end
 end
